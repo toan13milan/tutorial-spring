@@ -1,0 +1,21 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+   <head>
+      <title th:utext="${title}"></title>
+           <link rel="icon" href="https://d9zxa7ljcz9gm.cloudfront.net/wp-content/uploads/2018/12/oie_6p6bcSMZ7nWg-3.png" type="image/gif">
+          <link href="http://cdn.jsdelivr.net/webjars/bootstrap/3.3.4/css/bootstrap.min.css"
+          th:href="@{/webjars/bootstrap/3.3.7/css/bootstrap.min.css}"
+          rel="stylesheet" media="screen"/>
+          <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"/>
+       
+   </head>
+    
+   <body>
+      <!-- Include _menu.html -->      
+    <th:block th:include="_tabnav"></th:block>  
+      <div class="container">
+      <!-- Include _menu.html -->
+      <h2><span th:utext="${message}"></span></h2>
+      </div>
+   </body>
+</html>

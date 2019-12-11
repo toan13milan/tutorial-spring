@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>History</title>
+<link rel="icon" href="https://d9zxa7ljcz9gm.cloudfront.net/wp-content/uploads/2018/12/oie_6p6bcSMZ7nWg-3.png" type="image/gif">
+           <link href="http://cdn.jsdelivr.net/webjars/bootstrap/3.3.4/css/bootstrap.min.css"
+          th:href="@{/webjars/bootstrap/3.3.5/css/bootstrap.min.css}"
+          rel="stylesheet" media="screen"/>
+          <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"/>
+</head>
+<body>
+<th:block th:include="_tabnav"></th:block>
+ <div class="container">
+      <!-- Include _menu.html -->      
+   <div class="row">
+<div class="search">
+	<form name="form" th:action="@{/history(page=1)}" method="GET" th:object="${search}">
+	 <input type="text" name="search">
+	 <input type="submit" value="search">
+	 </form>
+	 </div>
+</div>
+<h3 style="text-align:center;margin-top:50px">History User</h3>
+	<div class="tblPro">
+		<table border="1" width:100%>
+			<tr>
+				<th>Name User</th>
+				<th>Action</th>
+				<th>Product</th>
+				<th>Date</th>
+			</tr>
+		<tr th:each= "his: ${histories}">
+			<td th:text="${his.appUser.userName}"></td>
+			<td th:text="${his.action}"></td>
+			<td th:text="${his.productName}"></td>
+			<td th:text="${his.date}"></td>
+		</tr>
+	</table>
+	<nav aria-label="Pagination" th:if="${histories.totalPages gt 0}">
+    <ul class="pagination justify-content-center font-weight-bold">
+        <li class="page-item" th:classappend="${histories.number eq 0} ? 'disabled'">
+            <a class="page-link"
+               th:href="@{/history(size=${histories.size}, page=${histories.number lt 2 ? 1 : histories.number}, search = ${search})}"
+               aria-label="Previous" title="Previous Page" data-toggle="tooltip">
+                <span aria-hidden="true">&laquo;</span>
+            </a>
+        </li>
+        <li class="page-item" th:classappend="${i eq histories.number + 1} ? 'active'"
+            th:each="i : ${#numbers.sequence( histories.number + 1, histories.totalPages > 10 + histories.number ? histories.number + 10 : histories.totalPages, 1)}">
+            <a class="page-link" th:href="@{/history(size=${histories.size}, page=${i}, search = ${search})}" th:text="${i}"
+               th:title="${'Page '+ i}" data-toggle="tooltip"></a>
+        </li>
+         <li class="page-item disabled" th:if="${histories.number + 10 < histories.totalPages}">
+            <a class="page-link svg-icon" href="#">
+                <span data-feather="more-horizontal" width="20" height="20">...</span>
+            </a>
+        </li>
+        <li class="page-item" th:classappend="${histories.number + 1 eq histories.totalPages} ? 'disabled'">
+            <a class="page-link"
+               th:href="@{/history(size=${histories.size}, page=${histories.number + 2}, search = ${search})}"
+               aria-label="Next" title="Next Page" data-toggle="tooltip">
+                <span aria-hidden="true">&raquo;</span>
+            </a>
+        </li>
+    </ul>
+	</nav>
+	</div>
+</body>
+</html>

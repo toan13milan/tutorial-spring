@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>List Product</title>
+<link rel="icon" href="https://d9zxa7ljcz9gm.cloudfront.net/wp-content/uploads/2018/12/oie_6p6bcSMZ7nWg-3.png" type="image/gif">
+           <link href="http://cdn.jsdelivr.net/webjars/bootstrap/3.3.4/css/bootstrap.min.css"
+          th:href="@{/webjars/bootstrap/3.3.5/css/bootstrap.min.css}"
+          rel="stylesheet" media="screen"/>
+          <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"/>
+</head>
+<body>
+   <th:block th:include="_tabnav"></th:block>
+ <div class="container">
+      <!-- Include _menu.html -->      
+   <div class="row">
+<div class="add" th:if="${user == 'admin'}">
+	<button type="button">
+		<a href="/addProductPage" style="text-decoration: none">Add product</a>
+	</button>
+</div>
+<div class="add" th:if="${user == 'user'}">
+	<button type="button">
+		<a th:href="@{/listCart(page=1, cartId=2)}">Go to Cart Product</a>
+	</button>
+</div>
+<div class="search">
+	<form name="form" th:action="@{/listProduct(page=${pageNumber})}" method="GET" th:object="${search}">
+	 <input type="text" th:name="search">
+	 <input type="submit" value="search">
+	 </form>
+	 </div>
+</div>
+<h3 style="text-align:center;margin-top:50px">List Product</h3>
+	<div class="tblPro">
+		<table border="1">
+			<tr>
+				<th>STT</th>
+				<th>Name</th>
+				<th>Price</th>
+				<th th:if="${user != null}">Amount</th>
+				<th colspan="2" th:if="${user == 'admin'}">Action</th>
+			</tr>
+		<tr th:each= "pro, iStat: ${productPage}" th:style="${iStat.odd}? 'font-weight: bold;'"
+            th:alt-title="${iStat.even}? 'even' : 'odd'">
+            <td th:text="${iStat.count}"></td>
+			<td th:text="${pro.nameProduct}"></td>
+			<td th:text="${pro.cost}"></td>
+			<td th:if="${user == 'admin'}" ><span th:text="${pro.amount}"></span></td>
+			<td th:if="${user == 'user'}">
+				<form name="form" th:action="@{/addCart(id=${pro.id})}" method="GET" th:object="${amount}">
+					<input type="number" name="amount"/>
+					<input type="number" th:value="${pro.id}" name="id" hidden>
+					<input type="submit" value="Add to Cart">
+				</form>
+			</td>
+			<td th:if="${user == 'admin'}"><a th:href=@{/getProduct(id=${pro.id})}>Edit</a></td>
+			<td th:if="${user == 'admin'}"><a th:href=@{/deleteProduct(id=${pro.id},search=${search},name=${pro.nameProduct})}>Delete</a></td>
+		
+		</tr>
+	</table>
+	<!-- customers pagination -->
+	<nav aria-label="Pagination" th:if="${productPage.totalPages gt 0}">
+    <ul class="pagination justify-content-center font-weight-bold">
+        <li class="page-item" th:classappend="${productPage.number eq 0} ? 'disabled'">
+            <a class="page-link"
+               th:href="@{/listProduct(page=${productPage.number lt 2 ? 1 : productPage.number}, search = ${search})}"
+               aria-label="Previous" title="Previous Page" data-toggle="tooltip">
+                <span aria-hidden="true">&laquo;</span>
+            </a>
+        </li>
+        <li class="page-item" th:classappend="${i eq productPage.number + 1} ? 'active'"
+            th:each="i : ${#numbers.sequence( productPage.number + 1, productPage.totalPages > 10 + productPage.number ? productPage.number + 10 : productPage.totalPages, 1)}">
+            <a class="page-link" th:href="@{/listProduct(page=${i}, search = ${search})}" th:text="${i}"
+               th:title="${'Page '+ i}" data-toggle="tooltip"></a>
+        </li>
+          <li class="page-item disabled" th:if="${productPage.number + 10 < productPage.totalPages}">
+            <a class="page-link svg-icon" href="#">
+                <span data-feather="more-horizontal" width="20" height="20">...</span>
+            </a>
+        </li>
+        <li class="page-item" th:classappend="${productPage.number + 1 eq productPage.totalPages} ? 'disabled'">
+            <a class="page-link"
+               th:href="@{/listProduct(page=${productPage.number + 2}, search = ${search})}"
+               aria-label="Next" title="Next Page" data-toggle="tooltip">
+                <span aria-hidden="true">&raquo;</span>
+            </a>
+        </li>
+    </ul>
+	</nav>
+	</div>
+	</div>
+</body>
+</html>

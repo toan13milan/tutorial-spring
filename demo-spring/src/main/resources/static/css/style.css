@@ -1,0 +1,93 @@
+h1 {
+    color:#0000FF;
+}
+ 
+h2 {
+    color:#FF0000;
+}
+ 
+table {
+    border-collapse: collapse;margin: auto;
+    width: 100%;
+}
+ 
+table th, table td {
+    padding: 5px;
+}
+.nav-search {
+	width:100%;
+}
+ .add {
+	width: 10%;
+    float: right;
+}
+ .search {
+	width: 25%;
+    float: right;
+}
+.tblPro{
+	margin-top:40px;
+}
+.tblPro talbe {
+	
+}
+.menu {
+	border: 1px solid #ccc;
+	padding:15px;
+	margin-bottom:10px;
+	background-color: #ccc;
+}
+.menu a {
+	text-decoration: none;
+}
+.pagination{
+	float:left;
+	padding: 5px;
+}
+
+ .nav{
+        background-color: #0080C0;
+    }
+ 
+    .nav>li{
+        float: left;
+        margin-right: 15px;
+    }
+     
+    .nav>li>a{
+        text-transform: uppercase;
+        color: #fff;
+    }
+ 
+    .nav li{
+        position: relative;
+    }
+ 
+    .nav li a{
+        padding: 10px;
+        line-height: 20px;
+        display: inline-block;
+    }
+ 
+    .nav .sub-menu{
+        display: none;
+        position: absolute;
+        top: 0;
+        left: 100%;
+        width: 200px;
+        background-color: #eee;
+        padding: 5px 20px;
+    }
+     
+    .nav li:hover>.sub-menu{
+        display: block;
+    }
+ 
+    .nav>li>.sub-menu{
+        top: 40px;
+        left: 0;
+        list-style-type: none;
+    }
+    .active {
+    	background-color:#ccc;
+    }

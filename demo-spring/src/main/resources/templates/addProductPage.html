@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>Add product</title>
+<link rel="icon" href="https://d9zxa7ljcz9gm.cloudfront.net/wp-content/uploads/2018/12/oie_6p6bcSMZ7nWg-3.png" type="image/gif">
+   <link href="http://cdn.jsdelivr.net/webjars/bootstrap/3.3.4/css/bootstrap.min.css"
+          th:href="@{/webjars/bootstrap/3.3.5/css/bootstrap.min.css}"
+          rel="stylesheet" media="screen"/>
+          <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"/>
+</head>
+<body>
+      <!-- Include _menu.html -->      
+    <th:block th:include="_tabnav"></th:block>  
+     <div class="container">
+     <form name='form' th:action="@{/addProduct}" method='POST' th:object="${productDto}">
+         <table>
+            <tr>
+            <div class="form-group" th:classappend="${#fields.hasErrors('nameProduct')} ? has-error : ''">
+                    <label>Name Product:</label>                                                                
+                    <div th:classappend="${#fields.hasErrors('nameProduct')} ? 'input-icon right' : ''">
+                    <i th:if="${#fields.hasErrors('nameProduct')}" class="fa fa-exclamation tooltips" data-original-title="please enter a valid first name" data-container="body"></i>
+                    <input type="text" class="form-control" maxlength="32" th:field="*{nameProduct}"/>
+                    <span th:if="${#fields.hasErrors('nameProduct')}" class="help-block" th:errors="*{nameProduct}">Not empty</span>
+                    </div>
+              </div>
+            </tr>
+            <tr>
+            <div class="form-group" th:classappend="${#fields.hasErrors('amount')} ? has-error : ''">
+                <label>Amount:</label>                                                                
+                    <div th:classappend="${#fields.hasErrors('amount')} ? 'input-icon right' : ''">
+                    <i th:if="${#fields.hasErrors('amount')}" class="fa fa-exclamation tooltips" data-original-title="please enter a valid first name" data-container="body"></i>
+                    <input type="number" class="form-control" maxlength="32" th:field="*{amount}"/>
+                    <span th:if="${#fields.hasErrors('amount')}" class="help-block" th:errors="*{amount}">Not empty</span>
+                    </div>
+                    </div>
+            </tr>
+            <tr>
+                  <div class="form-group" th:classappend="${#fields.hasErrors('cost')} ? has-error : ''">
+                <label>Price:</label>                                                                
+                    <div th:classappend="${#fields.hasErrors('cost')} ? 'input-icon right' : ''">
+                    <i th:if="${#fields.hasErrors('cost')}" class="fa fa-exclamation tooltips" data-original-title="please enter a valid first name" data-container="body"></i>
+                    <input type="number" class="form-control" maxlength="32" th:field="*{cost}"/>
+                    <span th:if="${#fields.hasErrors('cost')}" class="help-block" th:errors="*{cost}">Not empty</span>
+                    </div>
+                    </div>
+            </tr>
+                   <tr>
+                  <div class="form-group" th:classappend="${#fields.hasErrors('cost')} ? has-error : ''">
+                <label>Category:</label>                                                                
+                    <div th:classappend="${#fields.hasErrors('categories')} ? 'input-icon right' : ''">
+                    <i th:if="${#fields.hasErrors('categories')}" class="fa fa-exclamation tooltips" data-original-title="please enter a valid first name" data-container="body"></i>
+                       <select th:field="*{categories}">
+                         <option value=""> -- </option>
+                         <option th:each="cat : ${categories}"
+                            th:value="${cat.id}"
+                            th:utext="${cat.nameCat}"/>
+                  		</select>
+                    <span th:if="${#fields.hasErrors('categories')}" class="help-block" th:errors="*{categories}">Not empty</span>
+                    </div>
+                    </div>
+            </tr>
+            <tr>
+               <td><input name="submit" type="submit" value="add" /></td>
+            </tr>
+         </table>
+      </form>
+      </div>
+</body>
+</html>

@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>List Product</title>
+<link rel="icon" href="https://d9zxa7ljcz9gm.cloudfront.net/wp-content/uploads/2018/12/oie_6p6bcSMZ7nWg-3.png" type="image/gif">
+           <link href="http://cdn.jsdelivr.net/webjars/bootstrap/3.3.4/css/bootstrap.min.css"
+          th:href="@{/webjars/bootstrap/3.3.5/css/bootstrap.min.css}"
+          rel="stylesheet" media="screen"/>
+          <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"/>
+</head>
+<body>
+   <th:block th:include="_tabnav"></th:block>
+ <div class="container">
+      <!-- Include _menu.html -->      
+   <div class="row">
+<div class="add">
+<button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Buy</button>
+
+<!-- Modal -->
+<div id="myModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Confirm Cart</h4>
+      </div>
+      <div class="modal-body">
+      	<form name="form" th:action="@{/buyProduct}" method="POST" th:object="${cartDto}">
+      	<div class="form-group">
+	      	<label>Name User</label>
+		 	<input type="text" th:name="nameUser">
+	 	</div>
+	 	<div class="form-group">
+		 	<label>Address</label>
+		 	<input type="text" th:name="address">
+	 	</div>
+	 	<div class="form-group">
+		 	<label>CartId</label>
+		 	<input type="text" th:name="cartId" th:value="${param.cartId}" hidden>
+	 	</div>
+	 	<div class="form-group">
+	 	<label>Type Payment</label>
+	 	 <select th:field="*{typePay}">
+             <option value=""> -- </option>
+ 			 <option th:each="type : ${typePays}"
+                            th:value="${type.id}"
+                            th:utext="${type.name}"/>
+         </select>
+         </div>
+         <button type="submit" class="btn btn-default" data-confirm="modal">Confirm</button>
+	  </form>
+      </div>
+    </div>
+
+  </div>
+</div>
+</div>
+</div>
+<h3 style="text-align:center;margin-top:50px">Product In Cart</h3>
+	<div class="tblPro">
+		<table border="1">
+			<tr>
+				<th>STT</th>
+				<th>Name</th>
+				<th>Price</th>
+				<th>Amount</th>
+			</tr>
+		<tr th:each= "pro, iStat: ${productPage}" th:style="${iStat.odd}? 'font-weight: bold;'"
+            th:alt-title="${iStat.even}? 'even' : 'odd'">
+            <td th:text="${iStat.count}"></td>
+			<td th:text="${pro.productB.nameProduct}"></td>
+			<td th:text="${pro.productB.cost}"></td>
+			<td th:text="${pro.amount}"></td>
+		</tr>
+	</table>
+	<nav aria-label="Pagination" th:if="${productPage.totalPages gt 0}">
+    <ul class="pagination justify-content-center font-weight-bold">
+        <li class="page-item" th:classappend="${productPage.number eq 0} ? 'disabled'">
+            <a class="page-link"
+               th:href="@{/listCart(size=${productPage.size}, page=${productPage.number lt 2 ? 1 : productPage.number}, search = ${search},cartId=2)}"
+               aria-label="Previous" title="Previous Page" data-toggle="tooltip">
+                <span aria-hidden="true">&laquo;</span>
+            </a>
+        </li>
+        <li class="page-item" th:classappend="${i eq productPage.number + 1} ? 'active'"
+            th:each="i : ${#numbers.sequence( productPage.number + 1, productPage.totalPages > 10 + productPage.number ? productPage.number + 10 : productPage.totalPages, 1)}">
+            <a class="page-link" th:href="@{/listCart(size=${productPage.size}, page=${i}, search = ${search},cartId=2)}" th:text="${i}"
+               th:title="${'Page '+ i}" data-toggle="tooltip"></a>
+        </li>
+           <li class="page-item disabled" th:if="${productPage.number + 10 < productPage.totalPages}">
+            <a class="page-link svg-icon" href="#">
+                <span data-feather="more-horizontal" width="20" height="20">...</span>
+            </a>
+        </li>
+        <li class="page-item" th:classappend="${productPage.number + 1 eq productPage.totalPages} ? 'disabled'">
+            <a class="page-link"
+               th:href="@{/listCart(size=${productPage.size}, page=${productPage.number + 2}, search = ${search},cartId=2)}"
+               aria-label="Next" title="Next Page" data-toggle="tooltip">
+                <span aria-hidden="true">&raquo;</span>
+            </a>
+        </li>
+    </ul>
+	</nav>
+	</div>
+	</div>
+</body>
+<script th:src="@{/webjars/jquery/3.4.1/jquery.min.js}"></script>
+<script th:src="@{/webjars/bootstrap/3.3.5/js/bootstrap.min.js}"></script>
+</html>
